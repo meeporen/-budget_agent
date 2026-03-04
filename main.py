@@ -58,5 +58,5 @@ state3 = {
 }
 
 result3 = graph.invoke(state3)
-print("Ответ:", result3["messages"][-1].content)
+print("Ответ:", result3["messages"].content)
 print(result3["messages"][-1])
