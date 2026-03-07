@@ -9,6 +9,7 @@ sys.path.insert(0, str(root_dir))
 
 from config import settings
 from bot.handlers import router
+from database import init_db
 
 
 dp = Dispatcher()
@@ -16,6 +17,7 @@ dp.include_router(router)
 bot = Bot(token=settings.telegram_bot_token)
 
 async def main():
+    init_db()
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
