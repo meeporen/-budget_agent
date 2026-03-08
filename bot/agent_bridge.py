@@ -1,6 +1,7 @@
 import sys
 import re
 from pathlib import Path
+from datetime import datetime
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
@@ -15,20 +16,21 @@ def answer_agent(user_id: int, user_message: str) -> str:
     if get_user(user_id) is None:
         create_user(user_id)
 
+    DAYS = ["понедельник", "вторник", "среду", "четверг", "пятницу", "субботу", "воскресенье"]
+    today = DAYS[datetime.now().weekday()]
+
     state = {
         "user_id": user_id,
         "budget": None,
         "balance": None,
-        "day_of_week": 0,
+        "day_of_week": datetime.now().weekday(),
         "messages": [
             SystemMessage(content=(
                 "Ты помощник по управлению личным бюджетом. "
                 "Отвечай на русском языке. "
                 "Никогда не упоминай названия инструментов пользователю. "
                 "Сам определяй какое действие нужно выполнить по контексту сообщения. "
-                "Если пользователь говорит 'установи бюджет 5000' — вызывай set_budget. "
-                "Если пользователь говорит 'потратил 300' — вызывай recalculate с отрицательным числом. "
-                "Если пользователь говорит 'сколько осталось' — вызывай get_balance. "
+                f"Сегодня {today}. Если пользователь не уточняет день — используй сегодняшний. "
                 "Отвечай коротко и по делу."
             )),
             HumanMessage(content=user_message),

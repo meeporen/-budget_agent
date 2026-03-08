@@ -94,6 +94,7 @@ def get_balance(user_id: int):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT budget FROM users WHERE user_id = ?",
+        (user_id,)
 
     )
     row = cursor.fetchone()
@@ -106,7 +107,8 @@ def delete_user(user_id: int):
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
+    cursor.execute("DELETE FROM users WHERE user_id = ?",
+                   (user_id,))
 
     conn.commit()
     conn.close()
